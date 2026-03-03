@@ -1,0 +1,1581 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MANA · Receitas Completas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: #F8F9FA;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            width: 100%;
+            margin: 0 0 24px 0;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 18px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 20px;
+            background: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            padding-right: 50px;
+        }
+
+        .search-box input:focus {
+            outline: 2px solid #E63946;
+            outline-offset: 2px;
+        }
+
+        .search-box button {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px 12px;
+            color: #E63946;
+        }
+
+        .header-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #E63946;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-subtitle {
+            color: #718096;
+            margin-bottom: 24px;
+            font-size: 16px;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .category-card {
+            background: #FFFFFF;
+            border-radius: 24px;
+            padding: 20px 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            border: 1px solid #F0F0F0;
+            transition: all 0.2s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card:hover {
+            transform: translateY(-2px);
+            border-color: #E63946;
+            box-shadow: 0 12px 24px rgba(230, 57, 70, 0.08);
+        }
+
+        .category-emoji {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .category-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1A202C;
+            margin-bottom: 4px;
+        }
+
+        .category-count {
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            color: #E63946;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            cursor: pointer;
+            padding: 8px 0;
+        }
+
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .category-title-emoji {
+            font-size: 32px;
+            background: #FFF0F0;
+            width: 56px;
+            height: 56px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-title-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1A202C;
+        }
+
+        .recipes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .recipe-item {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid #F0F0F0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .recipe-item:hover {
+            border-color: #E63946;
+            transform: translateX(4px);
+        }
+
+        .recipe-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .recipe-item-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: #1A202C;
+        }
+
+        .recipe-item-icon {
+            color: #E63946;
+            font-size: 20px;
+        }
+
+        .recipe-card {
+            background: #FFFFFF;
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid #F0F0F0;
+        }
+
+        .recipe-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .recipe-header-emoji {
+            font-size: 32px;
+            background: #FFF0F0;
+            width: 56px;
+            height: 56px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .recipe-header-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1A202C;
+        }
+
+        .recipe-section {
+            margin: 20px 0;
+        }
+
+        .recipe-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #4A5568;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ingredients-list {
+            list-style: none;
+            background: #F8F9FA;
+            border-radius: 16px;
+            padding: 16px;
+        }
+
+        .ingredients-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #E2E8F0;
+            color: #4A5568;
+        }
+
+        .ingredients-list li:last-child {
+            border-bottom: none;
+        }
+
+        .preparation-text {
+            background: #F8F9FA;
+            border-radius: 16px;
+            padding: 16px;
+            color: #4A5568;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+        .observation {
+            background: #FFF0F0;
+            padding: 12px;
+            border-radius: 8px;
+            font-style: italic;
+            color: #E63946;
+            margin-top: 12px;
+            font-size: 0.95em;
+        }
+
+        .calc-button {
+            background: #E63946;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 16px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .calc-button:hover {
+            background: #C53030;
+            transform: scale(1.02);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 32px;
+            padding: 28px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #E63946;
+            font-size: 1.6em;
+            font-weight: 700;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #4A5568;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4A5568;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            border: 2px solid #E2E8F0;
+            border-radius: 16px;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #E63946;
+        }
+
+        .example {
+            font-size: 0.9em;
+            color: #718096;
+            margin-top: 8px;
+        }
+
+        .calculate-btn {
+            background: #E63946;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+
+        .print-btn {
+            background: #2D3748;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .print-btn:hover {
+            background: #1A202C;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #A0AEC0;
+            background: #FFFFFF;
+            border-radius: 24px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-title">MANA</div>
+        <div class="header-subtitle">Receitas completas</div>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Buscar receita...">
+            <button onclick="searchRecipes()">🔍</button>
+        </div>
+
+        <div id="categoriesView"></div>
+        <div id="recipesView" class="hidden">
+            <button class="back-button" onclick="showCategories()">← Voltar</button>
+            <div id="categoryHeader"></div>
+            <div id="recipesList" class="recipes-list"></div>
+        </div>
+        <div id="recipeDetailView" class="hidden">
+            <button class="back-button" onclick="showRecipes()">← Voltar</button>
+            <div id="recipeDetail"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="calcModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalRecipeName">Calculadora</h2>
+                <button class="close-button" onclick="closeModal()">✕</button>
+            </div>
+            <div class="input-group">
+                <label>Fator de multiplicação:</label>
+                <input type="text" id="multiplierInput" placeholder="Ex: 2, 1.5, 1/2, 3/4" value="1">
+                <div class="example">Digite: 2 (dobro), 0.5 (metade), 1/2, 3/4</div>
+            </div>
+            <button class="calculate-btn" onclick="calculateProportion()">Calcular</button>
+            <div id="modalResult"></div>
+            <div id="printSection" style="display: none;">
+                <button class="print-btn" onclick="printThermal()">🧾 Imprimir (térmica)</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ------------------------------------------------------------
+        // BANCO DE DADOS COMPLETO - 67 RECEITAS ORIGINAIS
+        // ------------------------------------------------------------
+        const recipes = [
+            // -------------------- BASES --------------------
+            {
+                name: "Alho batido",
+                category: "Bases",
+                emoji: "🧄",
+                ingredients: ["1 kg Alho descascado (in natura)", "900 ml Óleo de Soja"],
+                validity: "Validade conforme temperatura do freezer:\n• 0°C à -5°C: 10 dias\n• -6°C à -10°C: 20 dias\n• -11°C à -18°C: 30 dias\n• Menor -18°C: 90 dias",
+                prep: "1. Bater todos os ingredientes no liquidificador\n2. Congelar.",
+                epi: "Luvas de Vinil ou Nitrílica",
+                hasCalculator: true
+            },
+            {
+                name: "Arroz integral",
+                category: "Bases",
+                emoji: "🍚",
+                ingredients: ["1 kg Arroz integral", "3 L de água"],
+                validity: "2 dias (sob refrigeração)",
+                yield: "2,5 kg",
+                storage: "Sob refrigeração",
+                prep: "1. Lavar o arroz\n2. Colocar em água fria\n3. Cozinhar por 40 minutos em fogo alto",
+                epi: "Luvas de Vinil ou Nitrílica e Luva Térmica",
+                hasCalculator: true
+            },
+            {
+                name: "Arroz gohan",
+                category: "Bases",
+                emoji: "🍙",
+                ingredients: ["2 L da conserva de vinagre de cereal", "5 kg arroz gohan (grão curto)", "6,5 L de água fria"],
+                validity: "2 dias",
+                yield: "16 kg",
+                storage: "Temperatura ambiente",
+                prep: "1. Lavar o arroz por 3 vezes\n2. Cozinhar por aproximadamente 30 minutos\n3. Deixar descansar por no mínimo 20 minutos\n4. Temperar o arroz ainda quente com a conserva do vinagre de cereal (sempre frio)\n5. Cobrir com pano descartável úmido (Perfex)\n6. Após esfriar, remover o pano e cobrir com tampa plástica",
+                epi: "Luvas de Vinil ou Nitrílica e Luva Térmica",
+                hasCalculator: true
+            },
+            {
+                name: "Espaguete abobrinha",
+                category: "Bases",
+                emoji: "🥒",
+                ingredients: ["1 kg de abobrinha italiana"],
+                validity: "2 dias",
+                yield: "0,7 kg",
+                storage: "Sob refrigeração",
+                prep: "1. Higienizar a abobrinha com produto específico\n2. Fatiar no ralador para espaguete\n3. Acondicionar e guardar sob refrigeração",
+                hasCalculator: true
+            },
+            {
+                name: "Espaguete pupunha (in natura)",
+                category: "Bases",
+                emoji: "🥥",
+                ingredients: ["1 kg espaguete de pupunha", "3 litros de água"],
+                validity: "2 dias",
+                yield: "0,950 kg",
+                storage: "Sob refrigeração",
+                prep: "1. Ferver a água\n2. Adicionar o espaguete\n3. Deixar cozinhar por 10 minutos\n4. Escorrer a água e esfriar\n5. Guardar sob refrigeração",
+                hasCalculator: true
+            },
+            {
+                name: "Espaguete pupunha em conserva",
+                category: "Bases",
+                emoji: "🥫",
+                ingredients: ["1 kg espaguete de pupunha", "3 litros de água"],
+                validity: "2 dias",
+                yield: "0,950 kg",
+                storage: "Sob refrigeração",
+                prep: "1. Ferver a água\n2. Adicionar o espaguete\n3. Deixar cozinhar por 10 minutos\n4. Escorrer a água e esfriar\n5. Guardar sob refrigeração",
+                hasCalculator: true
+            },
+            {
+                name: "Grão de bico",
+                category: "Bases",
+                emoji: "🫘",
+                ingredients: ["1 kg de grão de bico", "3 L de água", "1/2 colher de sopa de sal"],
+                validity: "2 dias",
+                yield: "2,2 kg",
+                storage: "Sob refrigeração",
+                prep: "1. Deixar o grão de bico em molho (água) por 1 hora\n2. Escorrer a água (molho)\n3. Em uma panela de pressão, colocar 3 L de água e o grão de bico\n4. Após 'pegar pressão', contar 30 minutos e desligar\n5. Escorrer a água de cozimento, colocar em caixa plástica com tampa e guardar sob refrigeração",
+                epi: "Luva Térmica",
+                hasCalculator: true
+            },
+            {
+                name: "Quinoa",
+                category: "Bases",
+                emoji: "🌾",
+                ingredients: ["1 kg de quinoa vermelha em grãos", "2 L de água"],
+                validity: "2 dias",
+                yield: "2,7 kg",
+                storage: "Sob refrigeração",
+                prep: "1. Colocar a quinoa em uma panela com a água e cozinhar por 20 minutos em fogo alto até secar toda a água\n2. Desligar\n3. Descansar por 30 minutos\n4. Armazenar em um recipiente plástico com tampa sob refrigeração",
+                epi: "Luva Térmica",
+                hasCalculator: true
+            },
+            {
+                name: "Mix de folhas higienizado",
+                category: "Bases",
+                emoji: "🥬",
+                ingredients: ["1 pacote de mix de folhas higienizadas (alface roxa, alface crespa e alface americana)"],
+                validity: "Verificar a indicação no rótulo do produto (para após aberto)",
+                storage: "Sob refrigeração",
+                prep: "1. Abrir a embalagem\n2. Transferir para um recipiente com tampa\n3. Manter sob refrigeração\nObs: Utilizar Luva de Vinil",
+                epi: "Luvas de Vinil ou Nitrílica",
+                hasCalculator: false
+            },
+            {
+                name: "Mix de folhas não higienizado",
+                category: "Bases",
+                emoji: "🥗",
+                ingredients: ["200 g de alface crespa", "200 g de alface americana", "100 g de alface roxa"],
+                validity: "1 dia",
+                storage: "Sob refrigeração",
+                prep: "1. Higienizar de acordo com o POP presente no Manual de Boas Práticas de cada unidade\n2. Cortar em quadrados de aproximadamente 2,5 cm\n3. Transferir para um recipiente com tampa\n4. Manter sob refrigeração",
+                epi: "Luvas de Vinil ou Nitrílica",
+                hasCalculator: false
+            },
+            {
+                name: "Repolho roxo",
+                category: "Bases",
+                emoji: "🟣",
+                ingredients: ["1 cabeça de repolho roxo"],
+                validity: "2 dias",
+                storage: "Sob refrigeração",
+                prep: "1. Lavar o repolho em água corrente (cabeça inteira)\n2. Cortar em 4 partes e remover o miolo (parte branca e dura)\n3. Fazer a higienização utilizando o produto sanitizante de alimentos de acordo com as informações do rótulo (sem picar, apenas cortado em 4 partes)\n4. No processador, escolher o disco E1 e cortar\n5. Embalar e identificar\nObs: Em caso de menor demanda, fatiar no fatiador manual.",
+                epi: "Luvas de Vinil ou Nitrílica e Luva de Malha de Aço para cortes",
+                hasCalculator: false
+            },
+
+            // -------------------- TOPPINGS --------------------
+            {
+                name: "Abacate",
+                category: "Toppings",
+                emoji: "🥑",
+                ingredients: ["1 kg de abacate limpo", "1 L de água potável", "10 ml de limão espremido"],
+                validity: "1 dia",
+                prep: "1. Descascar e remover o caroço\n2. Cortar ao meio e depois em 2 fatias\n3. Cortar no comprimento e em cubos (2 cm x 2 cm)\n4. Em um recipiente, colocar a água e o limão e mexer\n5. Acrescentar o abacate\n6. Embalar, identificar e armazenar sob refrigeração",
+                epi: "Luva de Malha de Aço para cortes, Luvas de Vinil ou Nitrílica",
+                obs: "Preferencialmente fazer produção para o consumo do dia.",
+                hasCalculator: true
+            },
+            {
+                name: "Abacaxi",
+                category: "Toppings",
+                emoji: "🍍",
+                ingredients: ["1 unidade de abacaxi"],
+                validity: "2 dias",
+                yield: "690 g",
+                storage: "Sob refrigeração",
+                prep: "1. Higienizar a fruta\n2. Cortar as bases\n3. Descascar\n4. Fatiar no comprimento, removendo o talo\n5. Cada parte, cortar ao meio (no comprimento)\n6. Cortar em tiras (aproximadamente 1,5 cm)\n7. Cortar em cubos (de aproximadamente 1,5 cm)",
+                epi: "Luva de Malha de Aço para cortes, Luvas de Vinil ou Nitrílica",
+                obs: "Preferencialmente fazer produção para o consumo do dia.",
+                hasCalculator: true
+            },
+            {
+                name: "Cenoura",
+                category: "Toppings",
+                emoji: "🥕",
+                ingredients: ["1 kg de cenoura"],
+                validity: "2 dias",
+                yield: "0,870 kg",
+                storage: "Sob refrigeração",
+                prep: "1. Descascar as cenouras\n2. Ralar no processador (lâmina Z3)",
+                epi: "Luvas de Vinil ou Nitrílica",
+                obs: "Preferencialmente fazer produção para o consumo do dia.",
+                hasCalculator: true
+            },
+            {
+                name: "Cream Cheese",
+                category: "Toppings",
+                emoji: "🧀",
+                ingredients: ["Cream cheese (porcionar)"],
+                prep: "Porcionar de acordo com a demanda.",
+                obs: "Manter sob refrigeração.",
+                hasCalculator: false
+            },
+            {
+                name: "Edamame",
+                category: "Toppings",
+                emoji: "🫛",
+                ingredients: ["1 kg de edamame", "2 L de água"],
+                validity: "2 dias",
+                yield: "1 kg",
+                storage: "Sob refrigeração",
+                prep: "1. Ferver a água\n2. Colocar o edamame\n3. Deixar cozinhar por 5 minutos\n4. Escorrer e esfriar",
+                epi: "Luvas Térmicas",
+                hasCalculator: true
+            },
+            {
+                name: "Kani",
+                category: "Toppings",
+                emoji: "🦀",
+                ingredients: ["1 pacote de Kani"],
+                validity: "Vide embalagem do produto",
+                yield: "6 pedaços (aproximadamente) por unidade",
+                prep: "1. Descongelar sob refrigeração\n2. Cortar em cubos entre 1,5 cm à 1,5 cm",
+                epi: "Luvas de Vinil ou Nitrílica",
+                hasCalculator: false
+            },
+            {
+                name: "Kiwi",
+                category: "Toppings",
+                emoji: "🥝",
+                ingredients: ["1 unidade kiwi"],
+                validity: "2 dias",
+                yield: "10 a 15 fatias (depende do tamanho)",
+                storage: "Sob refrigeração",
+                prep: "1. Higienizar e descascar a fruta\n2. Cortar as fatias com 0,5 cm de espessura",
+                epi: "Luvas de Vinil ou Nitrílica",
+                obs: "Espessura varia conforme maturação: fruta mais madura cortar mais grosso, mais firme cortar mais fino.",
+                hasCalculator: true
+            },
+            {
+                name: "Manga",
+                category: "Toppings",
+                emoji: "🥭",
+                ingredients: ["1 unidade de manga"],
+                validity: "2 dias",
+                yield: "390 g",
+                storage: "Sob refrigeração",
+                prep: "1. Higienizar a fruta\n2. Cortar a base da fruta\n3. A partir da base, descascar\n4. Posicionar a fruta em pé\n5. Na altura do caroço, cortar no comprimento em pedaços\n6. Remover o caroço\n7. Cada pedaço cortar ao meio no comprimento\n8. Fatiar na espessura de 1,5 cm após o corte",
+                epi: "Luvas de Vinil ou Nitrílica e Luva de Malha de Aço para cortes",
+                obs: "Preferencialmente fazer produção para o consumo do dia.",
+                hasCalculator: true
+            },
+            {
+                name: "Pepino Japonês",
+                category: "Toppings",
+                emoji: "🥒",
+                ingredients: ["1 kg de pepino japonês"],
+                validity: "2 dias",
+                yield: "1 kg",
+                storage: "Sob refrigeração",
+                prep: "1. Higienizar o pepino com produto específico para alimentos\n2. Fatiar o pepino (com casca), utilizando a Lâmina E1mm do processador de legumes",
+                epi: "Luvas de Vinil ou Nitrílica",
+                obs: "Preferencialmente fazer produção para o consumo do dia.",
+                hasCalculator: true
+            },
+            {
+                name: "Rabanete",
+                category: "Toppings",
+                emoji: "🌶️",
+                ingredients: ["Rabanete"],
+                prep: "Higienizar e fatiar finamente.",
+                obs: "Manter sob refrigeração.",
+                hasCalculator: false
+            },
+            {
+                name: "Sunomono",
+                category: "Toppings",
+                emoji: "🥗",
+                ingredients: ["1 kg de pepino japonês", "1200 ml de conserva de vinagre de cereal"],
+                validity: "2 dias",
+                yield: "1 kg",
+                storage: "Sob refrigeração",
+                prep: "1. Higienizar o pepino com produto específico\n2. Fatiar o pepino (com casca) utilizando a Lâmina E1mm\n3. Misturar a conserva de vinagre de cereal\n4. Deixar descansar por 3 horas sob refrigeração",
+                epi: "Luvas de Vinil ou Nitrílica",
+                hasCalculator: true
+            },
+            {
+                name: "Tomate Cereja",
+                category: "Toppings",
+                emoji: "🍅",
+                ingredients: ["1 kg de tomate cereja"],
+                validity: "2 dias",
+                storage: "Sob refrigeração",
+                prep: "1. Higienizar as frutas com produto sanitizante\n2. Fruta pequena: cortar ao meio (no comprimento)\n3. Fruta média/grande: cortar em 4 partes",
+                epi: "Luvas de Vinil ou Nitrílica",
+                obs: "Preferencialmente fazer produção para o consumo do dia.",
+                hasCalculator: true
+            },
+            {
+                name: "Wakame",
+                category: "Toppings",
+                emoji: "🌿",
+                ingredients: ["Wakame"],
+                validity: "Verificar rótulo do produto para validade após aberto",
+                storage: "Sob refrigeração",
+                prep: "1. Estimar quantidade necessária e descongelar apenas essa quantidade\n2. Descongelar em refrigeração\n3. Armazenar na cuba",
+                epi: "Luvas de Vinil ou Nitrílica",
+                hasCalculator: false
+            },
+
+            // -------------------- PROTEÍNAS --------------------
+            {
+                name: "Atum",
+                category: "Proteínas",
+                emoji: "🐟",
+                ingredients: ["1 kg de atum"],
+                validity: "1 dia",
+                yield: "0,9 kg",
+                storage: "Sob refrigeração",
+                prep: "1. Descongelar sob refrigeração\n2. Limpar o atum e retirar o nervo durante a limpeza\n3. Cortar em fatias e depois em cubos de aproximadamente 1,5cm\n4. Armazenar em caixa plástica com tampa",
+                epi: "Luvas de Vinil ou Nitrílica e Luva de Malha de Aço",
+                hasCalculator: true
+            },
+            {
+                name: "Atum com cream cheese",
+                category: "Proteínas",
+                emoji: "🐟🧀",
+                ingredients: ["60 g de atum cortado", "20 g de cream cheese"],
+                validity: "1 dia",
+                storage: "Sob refrigeração",
+                prep: "1. Misturar todos os ingredientes\nObs: Misturar de acordo com a demanda.",
+                hasCalculator: false
+            },
+            {
+                name: "Camarão Grelhado",
+                category: "Proteínas",
+                emoji: "🦐",
+                ingredients: ["1 kg de camarão (rosa ou cinza) 61/70 limpo", "8 g de sal rosa", "1 pitada de pimenta-do-reino", "70 ml de suco de limão espremido e coado", "40 ml de azeite de oliva"],
+                validity: "1 dia",
+                yield: "830 g",
+                storage: "Sob refrigeração",
+                prep: "Pré-cozimento: água fervente 30 segundos, choque térmico.\nTemperar e marinar 5 min.\nGrelhar 30 seg de cada lado.\nChoque térmico no congelador 10-15 min.\nArmazenar.",
+                epi: "Luvas de Vinil ou Nitrílica e Luvas Térmicas",
+                obs: "Produção com utensílios exclusivos.",
+                hasCalculator: true
+            },
+            {
+                name: "Ceviche",
+                category: "Proteínas",
+                emoji: "🐠",
+                ingredients: ["1 kg de filé de tilápia", "50 g de sal rosa", "300 ml de limão espremido e coado"],
+                validity: "1 dia",
+                yield: "1,360 kg",
+                storage: "Sob refrigeração",
+                prep: "1. Limpar a tilápia e retirar pele mais escura\n2. Cortar o peixe em cubos\n3. Temperar com limão e sal\n4. Deixar marinar por 20 minutos sob refrigeração antes de usar\nObs: manter o peixe imerso nesse tempero durante todo o tempo de uso.",
+                epi: "Luvas de Vinil ou Nitrílica e Luva de Malha de Aço",
+                hasCalculator: true
+            },
+            {
+                name: "Frango desfiado",
+                category: "Proteínas",
+                emoji: "🍗",
+                ingredients: ["5 kg de peito de frango sem osso e sem pele", "40 g de colorau", "70 g de alho batido", "8 g de sal", "2,5 L de água", "50 ml de Pimenta SRIRACHA"],
+                validity: "2 dias",
+                yield: "3,5 kg",
+                storage: "Sob refrigeração",
+                prep: "1. Colocar o frango na panela de pressão com água e os temperos\n2. Após pegar pressão, contar 30 minutos e desligar\n3. Abrir, escorrer a água\n4. Desfiar grosseiramente (ainda quente)\n5. Transferir para caixa plástica com tampa e refrigerar",
+                epi: "Luvas de Vinil ou Nitrílica e Luvas Térmicas",
+                hasCalculator: true
+            },
+            {
+                name: "Frango lemon pepper",
+                category: "Proteínas",
+                emoji: "🍋",
+                ingredients: ["1 kg de peito de frango sem osso", "20 g de lemon pepper", "40 ml de óleo composto", "20 ml de suco de abacaxi natural (puro)"],
+                validity: "2 dias",
+                yield: "660 g",
+                storage: "Sob refrigeração",
+                prep: "1. Cortar o frango em cubos de ~2 cm\n2. Temperar com lemon pepper e suco de abacaxi\n3. Marinar 5 minutos\n4. Aquecer frigideira (fogo alto)\n5. Colocar óleo composto\n6. Adicionar o frango\n7. Grelhar até dourar, mexendo levemente (cuidado para não desmanchar)\n8. Transferir para caixa plástica com tampa",
+                epi: "Luva de Malha de Aço, Luvas de Vinil e Térmicas",
+                hasCalculator: true
+            },
+            {
+                name: "Ovos de codorna",
+                category: "Proteínas",
+                emoji: "🥚",
+                ingredients: ["Ovos de codorna"],
+                validity: "Verificar rótulo",
+                storage: "Sob refrigeração",
+                prep: "1. Abrir a embalagem\n2. Lavar em água corrente\n3. Manter imerso em água filtrada e trocar diariamente\n4. Porcionamento: Marola 80g (~7 un), Viagem 100g (~9 un), Tsunami 120g (~11 un)",
+                hasCalculator: false
+            },
+            {
+                name: "Saint Peter",
+                category: "Proteínas",
+                emoji: "🐟",
+                ingredients: ["Filé de Saint Peter"],
+                prep: "Limpar e cortar em cubos. Temperar com limão e sal rosa.",
+                obs: "Manter refrigerado.",
+                hasCalculator: false
+            },
+            {
+                name: "Salmão",
+                category: "Proteínas",
+                emoji: "🐟",
+                ingredients: ["1 kg de salmão limpo"],
+                validity: "1 dia",
+                storage: "Sob refrigeração",
+                prep: "1. Limpar o salmão (remover aparas de espinhas)\n2. Cortar em fatias e depois em cubos de aproximadamente 1,5 cm\n3. Armazenar em caixa plástica com tampa",
+                epi: "Luva de Malha de Aço e Luvas de Vinil",
+                hasCalculator: true
+            },
+            {
+                name: "Salmão com cream cheese",
+                category: "Proteínas",
+                emoji: "🐟🧀",
+                ingredients: ["60 g de salmão cortado", "20 g de cream cheese"],
+                validity: "1 dia",
+                storage: "Sob refrigeração",
+                prep: "1. Misturar todos os ingredientes\nObs: Misturar de acordo com a demanda.",
+                hasCalculator: false
+            },
+            {
+                name: "Salmão Grelhado",
+                category: "Proteínas",
+                emoji: "🔥🐟",
+                ingredients: ["1 kg de salmão limpo", "10 g de sal", "100 g de margarina"],
+                validity: "1 dia",
+                yield: "900 g",
+                storage: "Sob refrigeração",
+                prep: "1. Limpar e cortar em cubos de ~2,5 cm\n2. Derreter a margarina\n3. Adicionar o salmão (em 2 etapas)\n4. Dourar dos dois lados\n5. Escorrer a gordura e esfriar\n6. Armazenar em caixa plástica com tampa",
+                epi: "Luva de Malha de Aço, Luvas de Vinil e Térmicas",
+                hasCalculator: true
+            },
+            {
+                name: "Shimeji",
+                category: "Proteínas",
+                emoji: "🍄",
+                ingredients: ["1 kg de cogumelo shimeji branco fresco", "100 ml de molho shoyu tradicional", "100 ml de óleo composto"],
+                validity: "2 dias",
+                yield: "830 g",
+                storage: "Sob refrigeração",
+                prep: "1. Desfiar o cogumelo\n2. Aquecer óleo em panela\n3. Adicionar cogumelo e cozinhar até al dente (~20 min)\n4. Adicionar shoyu e tampar\n5. Retirar, colocar em caixa plástica e esfriar\n6. Refrigerar",
+                epi: "Luvas de Vinil e Térmicas",
+                hasCalculator: true
+            },
+            {
+                name: "Tofu Temperado",
+                category: "Proteínas",
+                emoji: "🧈",
+                ingredients: ["1 kg de Tofu extra firme", "20 g de sal rosa", "60 ml limão espremido e coado", "60 ml de óleo de gergelim"],
+                validity: "1 dia",
+                yield: "1 kg",
+                storage: "Sob refrigeração",
+                prep: "1. Retirar do pacote\n2. Cortar em cubos 1,5 cm\n3. Marinar com sal, limão e óleo de gergelim\n4. Misturar bem e descansar 5 minutos\n5. Transferir para caixa plástica e refrigerar",
+                hasCalculator: true
+            },
+
+            // -------------------- CRUNCHES --------------------
+            {
+                name: "Cebola crispy",
+                category: "Crunches",
+                emoji: "🧅",
+                ingredients: ["1 kg cebola", "400 g farinha de trigo", "4 kg gordura de palma"],
+                validity: "2 dias",
+                yield: "600 g",
+                storage: "Temperatura ambiente",
+                prep: "1. Fatiar a cebola (lâmina E3mm)\n2. Passar na farinha no momento da fritura\n3. Fritar em gordura quente (160-180°C)\n4. Escorrer em papel toalha",
+                epi: "Mangote Térmico",
+                hasCalculator: true
+            },
+            {
+                name: "Chips de banana da terra",
+                category: "Crunches",
+                emoji: "🍌",
+                ingredients: ["1 kg banana da terra (verde)", "4 kg gordura de palma"],
+                validity: "2 dias",
+                yield: "360 g",
+                storage: "Temperatura ambiente",
+                prep: "1. Lavar (não descascar)\n2. Cortar em rodelas finas (lâmina E1mm)\n3. Fritar em gordura quente (160-180°C)\n4. Escorrer em papel toalha",
+                epi: "Mangote Térmico",
+                hasCalculator: true
+            },
+            {
+                name: "Chips de batata doce",
+                category: "Crunches",
+                emoji: "🍠",
+                ingredients: ["1 kg batata doce", "4 kg gordura de palma"],
+                validity: "2 dias",
+                yield: "420 g",
+                storage: "Temperatura ambiente",
+                prep: "1. Higienizar\n2. Fatiar (lâmina E1mm)\n3. Fritar (160-180°C)",
+                epi: "Mangote Térmico",
+                hasCalculator: true
+            },
+            {
+                name: "Chips de mandioca",
+                category: "Crunches",
+                emoji: "🥔",
+                ingredients: ["1 kg mandioca descascada (não congelada)", "4 kg gordura de palma"],
+                validity: "2 dias",
+                yield: "420 g",
+                storage: "Temperatura ambiente",
+                prep: "1. Fatiar (lâmina E1mm)\n2. Fritar (160-180°C)\n3. Escorrer",
+                epi: "Mangote Térmico",
+                obs: "Recomendado fazer em tacho de fritura.",
+                hasCalculator: true
+            },
+            {
+                name: "Couve crispy",
+                category: "Crunches",
+                emoji: "🥬",
+                ingredients: ["1 kg couve manteiga fatiada", "4 kg gordura de palma"],
+                validity: "2 dias",
+                storage: "Temperatura ambiente",
+                prep: "1. Aquecer gordura (máx 180°C)\n2. Fritar até dourar\n3. Escorrer",
+                epi: "Mangote Térmico",
+                hasCalculator: true
+            },
+            {
+                name: "Palha de nori",
+                category: "Crunches",
+                emoji: "🌊",
+                ingredients: ["1 folha de nori"],
+                validity: "2 dias",
+                storage: "Temperatura ambiente",
+                prep: "1. Abrir o pacote\n2. Dobrar em 3 partes e cortar no comprimento\n3. Cortar em tiras com tesoura",
+                hasCalculator: false
+            },
+
+            // -------------------- MOLHOS --------------------
+            {
+                name: "Molho clássico",
+                category: "Molhos",
+                emoji: "🥫",
+                ingredients: ["1 L de molho shoyu tradicional", "50 ml de óleo de gergelim"],
+                validity: "3 dias",
+                yield: "1,050 ml",
+                storage: "Temperatura ambiente",
+                prep: "Misturar todos os ingredientes.",
+                hasCalculator: true
+            },
+            {
+                name: "Molho fresh lime",
+                category: "Molhos",
+                emoji: "🍋",
+                ingredients: ["1 L de limão espremido e coado", "400 ml de azeite virgem", "30 g de sal rosa", "50 g de alho em pó"],
+                validity: "1 dia",
+                yield: "1400 ml",
+                storage: "Sob refrigeração",
+                prep: "Bater no liquidificador velocidade 2 por 1 minuto (ou até dissolver o alho).",
+                hasCalculator: true
+            },
+            {
+                name: "Molho mana",
+                category: "Molhos",
+                emoji: "🥭",
+                ingredients: ["300 ml de suco de maracujá Maguary", "200 ml de suco de limão", "620 g de abacaxi picado", "400 ml de mel"],
+                validity: "2 dias",
+                yield: "1400 ml",
+                storage: "Sob refrigeração",
+                prep: "1. Bater todos os ingredientes no liquidificador\n2. Coar\n3. Guardar sob refrigeração",
+                hasCalculator: true
+            },
+            {
+                name: "Molho mostarda e mel",
+                category: "Molhos",
+                emoji: "🍯",
+                ingredients: ["1 L de mostarda amarela", "500 ml de água", "250 ml de mel"],
+                validity: "2 dias",
+                yield: "1750 ml",
+                storage: "Sob refrigeração",
+                prep: "Bater todos os ingredientes no liquidificador.",
+                hasCalculator: true
+            },
+            {
+                name: "Molho ponzu",
+                category: "Molhos",
+                emoji: "🍊",
+                ingredients: ["1 L de molho shoyu tradicional", "50 ml de óleo de gergelim", "50 ml de limão espremido e coado"],
+                validity: "3 dias",
+                yield: "1100 ml",
+                storage: "Temperatura ambiente",
+                prep: "Misturar todos os ingredientes.",
+                hasCalculator: true
+            },
+            {
+                name: "Molho spice",
+                category: "Molhos",
+                emoji: "🌶️",
+                ingredients: ["1 L de molho shoyu tradicional", "50 ml de óleo de gergelim", "50 ml de limão espremido e coado", "20 ml de molho de pimenta SRIRACHA"],
+                validity: "3 dias",
+                yield: "1020 ml",
+                storage: "Temperatura ambiente",
+                prep: "Misturar todos os ingredientes.",
+                hasCalculator: true
+            },
+            {
+                name: "Molho tarê",
+                category: "Molhos",
+                emoji: "🍯",
+                ingredients: ["1 L de molho shoyu tradicional", "1 kg de açúcar", "1 cebola (pequena)"],
+                validity: "3 dias",
+                yield: "1 L",
+                storage: "Temperatura ambiente",
+                prep: "1. Descascar e cortar a cebola em cubos\n2. Em panela, colocar todos os ingredientes em fogo alto\n3. Ao ferver, baixar fogo e ferver até ponto de calda\n4. Desligar, esfriar, coar e acondicionar",
+                epi: "Luvas Térmicas",
+                hasCalculator: true
+            },
+
+            // -------------------- NUT --------------------
+            {
+                name: "Amêndoa Laminada",
+                category: "Nut",
+                emoji: "🌰",
+                ingredients: ["500 g de amêndoas laminadas"],
+                validity: "2 dias",
+                storage: "Temperatura ambiente",
+                prep: "1. Aquecer frigideira\n2. Acrescentar as amêndoas\n3. Mexer até dourar\n4. Transferir para recipiente e esfriar",
+                epi: "Luvas Térmicas",
+                hasCalculator: true
+            },
+            {
+                name: "Amendoim",
+                category: "Nut",
+                emoji: "🥜",
+                ingredients: ["Amendoim"],
+                validity: "30 dias após aberto (pista: 2 dias)",
+                storage: "Temperatura ambiente",
+                prep: "1. Abrir o pacote\n2. Transferir para recipiente com tampa forrado com plástico\n3. Higienizar recipiente e trocar plástico a cada abastecimento",
+                hasCalculator: false
+            },
+            {
+                name: "Castanha de Caju",
+                category: "Nut",
+                emoji: "🥜",
+                ingredients: ["Castanha de caju"],
+                validity: "30 dias após aberto (pista: 2 dias)",
+                storage: "Temperatura ambiente",
+                prep: "1. Abrir o pacote\n2. Transferir para recipiente com tampa forrado com plástico\n3. Higienizar recipiente e trocar plástico a cada abastecimento",
+                hasCalculator: false
+            },
+            {
+                name: "Castanha do Pará",
+                category: "Nut",
+                emoji: "🌰",
+                ingredients: ["Castanha do Pará (em banda)"],
+                validity: "30 dias após aberto (pista: 2 dias)",
+                storage: "Temperatura ambiente",
+                prep: "1. Abrir o pacote\n2. Transferir para recipiente com tampa forrado com plástico\n3. Higienizar recipiente e trocar plástico a cada abastecimento",
+                hasCalculator: false
+            },
+            {
+                name: "Chips de Coco",
+                category: "Nut",
+                emoji: "🥥",
+                ingredients: ["Chips de coco"],
+                prep: "Porcionar.",
+                obs: "Manter em recipiente fechado.",
+                hasCalculator: false
+            },
+            {
+                name: "Milho Crunch",
+                category: "Nut",
+                emoji: "🌽",
+                ingredients: ["Milho mostarda e mel"],
+                validity: "30 dias após aberto (pista: 2 dias)",
+                storage: "Temperatura ambiente",
+                prep: "1. Abrir o pacote\n2. Transferir para recipiente com tampa forrado com plástico\n3. Higienizar recipiente e trocar plástico a cada abastecimento",
+                hasCalculator: false
+            },
+            {
+                name: "Ervilha Wasabi",
+                category: "Nut",
+                emoji: "🟢",
+                ingredients: ["Ervilha wasabi"],
+                validity: "30 dias após aberto (pista: 2 dias)",
+                storage: "Temperatura ambiente",
+                prep: "1. Abrir o pacote\n2. Transferir para recipiente com tampa forrado com plástico\n3. Higienizar recipiente e trocar plástico a cada abastecimento",
+                hasCalculator: false
+            },
+
+            // -------------------- FINALIZAÇÕES --------------------
+            {
+                name: "Azeite Trufado",
+                category: "Finalizações",
+                emoji: "🫒",
+                ingredients: ["Azeite trufado"],
+                validity: "Verificar rótulo",
+                prep: "1. Abrir a embalagem\n2. Transferir para um borrifador\n3. Aplicar 2 borrifadas (3 para Tsunami)",
+                hasCalculator: false
+            },
+            {
+                name: "Pimenta Biquinho",
+                category: "Finalizações",
+                emoji: "🌶️",
+                ingredients: ["Pimenta biquinho"],
+                validity: "Verificar rótulo",
+                prep: "1. Abrir a embalagem\n2. Transferir para recipiente com tampa\n3. Manter sob refrigeração",
+                hasCalculator: false
+            },
+            {
+                name: "Cebola Roxa",
+                category: "Finalizações",
+                emoji: "🧅",
+                ingredients: ["Cebola roxa"],
+                validity: "2 dias",
+                storage: "Sob refrigeração",
+                prep: "1. Lavar com casca\n2. Remover casca (e primeira camada se murcha)\n3. Lavar novamente\n4. Cortar ao meio e remover miolo\n5. Fatiar no fatiador manual",
+                epi: "Luvas de Vinil ou Nitrílica",
+                hasCalculator: false
+            },
+            {
+                name: "Cebolinha",
+                category: "Finalizações",
+                emoji: "🌿",
+                ingredients: ["Cebolinha"],
+                validity: "2 dias (não higienizada) / verificar rótulo (higienizada)",
+                storage: "Sob refrigeração",
+                prep: "Se higienizada: apenas transferir.\nSe não higienizada: higienizar conforme POP, cortar em quadrados de 1,5 a 2,5 mm.",
+                epi: "Luvas de Vinil ou Nitrílica",
+                hasCalculator: false
+            },
+            {
+                name: "Gergelim",
+                category: "Finalizações",
+                emoji: "⚫",
+                ingredients: ["500 g de gergelim"],
+                validity: "2 dias",
+                prep: "1. Aquecer frigideira\n2. Torrar mexendo até dourar\n3. Transferir para recipiente e esfriar",
+                epi: "Luvas Térmicas",
+                hasCalculator: true
+            },
+            {
+                name: "Gengibre",
+                category: "Finalizações",
+                emoji: "🫚",
+                ingredients: ["Gengibre"],
+                validity: "Verificar rótulo",
+                prep: "1. Abrir a embalagem\n2. Transferir para recipiente com tampa\n3. Manter sob refrigeração",
+                hasCalculator: false
+            },
+            {
+                name: "Wasabi",
+                category: "Finalizações",
+                emoji: "🟢",
+                ingredients: ["Wasabi em pó"],
+                validity: "2 dias",
+                storage: "Sob refrigeração",
+                prep: "1. Seguir orientações do fabricante\n2. Porcionar em bolinhas de 10g aproximadamente",
+                hasCalculator: false
+            },
+
+            // -------------------- SOBREMESAS --------------------
+            {
+                name: "Abacaxi com raspas de limão",
+                category: "Sobremesas",
+                emoji: "🍍🍋",
+                ingredients: ["1 unidade de abacaxi", "1 unidade de limão para decoração"],
+                validity: "1 dia",
+                yield: "Variável",
+                storage: "Sob refrigeração",
+                prep: "Abacaxi: higienizar, cortar bases, descascar, fatiar, remover talo, cortar em cubos 1,5 cm.\nLimão: raspar casca (sem parte branca).\nMontagem: 100g de abacaxi + raspas.",
+                epi: "Luva de Malha de Aço e Luvas de Vinil",
+                hasCalculator: true
+            },
+
+            // -------------------- BEBIDAS --------------------
+            {
+                name: "Suco natural de abacaxi",
+                category: "Bebidas",
+                emoji: "🧃",
+                ingredients: ["200 g de abacaxi (maduro)", "250 ml de água filtrada"],
+                validity: "1 dia",
+                yield: "1 garrafa (300 ml)",
+                prep: "1. Higienizar e descascar o abacaxi\n2. Cortar em rodelas e picar (com miolo)\n3. Pesar 200 g\n4. Bater tudo no liquidificador\n5. Coar em peneira\n6. Envasar",
+                epi: "Luva de Malha de Aço e Luvas de Vinil",
+                hasCalculator: true
+            },
+            {
+                name: "Suco detox",
+                category: "Bebidas",
+                emoji: "🥤",
+                ingredients: ["200 ml de suco natural de abacaxi", "80 ml de suco natural de limão", "15 g de couve higienizada", "5 g de gengibre em conserva"],
+                validity: "1 dia",
+                yield: "1 garrafa (300 ml)",
+                prep: "1. Bater todos os ingredientes no liquidificador\n2. Coar em peneira\n3. Envasar",
+                hasCalculator: true
+            },
+            {
+                name: "Suco natural de limão",
+                category: "Bebidas",
+                emoji: "🍋",
+                ingredients: ["80 ml de limão espremido", "220 ml de água filtrada"],
+                validity: "1 dia",
+                yield: "1 garrafa (300 ml)",
+                prep: "1. Higienizar os limões\n2. Cortar ao meio e espremer\n3. Misturar com água\n4. Envasar",
+                hasCalculator: true
+            }
+        ];
+
+        // Emojis para cada categoria
+        const categoryEmojis = {
+            'Bases': '🍚',
+            'Toppings': '🥗',
+            'Proteínas': '🥩',
+            'Crunches': '🥨',
+            'Molhos': '🥫',
+            'Nut': '🥜',
+            'Finalizações': '🧂',
+            'Sobremesas': '🍰',
+            'Bebidas': '🧃'
+        };
+
+        // Estado da aplicação
+        let currentCategory = null;
+        let currentRecipe = null;
+        let lastMultiplier = 1;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showCategories();
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                if (term) searchRecipes(term);
+                else showCategories();
+            });
+        });
+
+        function showCategories() {
+            document.getElementById('categoriesView').classList.remove('hidden');
+            document.getElementById('recipesView').classList.add('hidden');
+            document.getElementById('recipeDetailView').classList.add('hidden');
+            renderCategories();
+        }
+
+        function renderCategories() {
+            const categories = {};
+            recipes.forEach(r => {
+                if (!categories[r.category]) categories[r.category] = [];
+                categories[r.category].push(r);
+            });
+
+            let html = '<div class="categories-grid">';
+            for (const [cat, items] of Object.entries(categories)) {
+                html += `
+                    <div class="category-card" onclick="selectCategory('${cat}')">
+                        <div class="category-emoji">${categoryEmojis[cat] || '📁'}</div>
+                        <div class="category-name">${cat}</div>
+                        <div class="category-count">${items.length} itens</div>
+                    </div>
+                `;
+            }
+            html += '</div>';
+            document.getElementById('categoriesView').innerHTML = html;
+        }
+
+        function selectCategory(category) {
+            currentCategory = category;
+            const filtered = recipes.filter(r => r.category === category);
+            
+            document.getElementById('categoriesView').classList.add('hidden');
+            document.getElementById('recipesView').classList.remove('hidden');
+            document.getElementById('recipeDetailView').classList.add('hidden');
+            
+            document.getElementById('categoryHeader').innerHTML = `
+                <div class="category-title">
+                    <span class="category-title-emoji">${categoryEmojis[category] || '📁'}</span>
+                    <span class="category-title-text">${category}</span>
+                </div>
+            `;
+            
+            let listHtml = '';
+            filtered.forEach(r => {
+                listHtml += `
+                    <div class="recipe-item" onclick="selectRecipe('${r.name.replace(/'/g, "\\'")}')">
+                        <div class="recipe-item-header">
+                            <span class="recipe-item-name">${r.emoji} ${r.name}</span>
+                            <span class="recipe-item-icon">→</span>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('recipesList').innerHTML = listHtml;
+        }
+
+        function selectRecipe(recipeName) {
+            currentRecipe = recipes.find(r => r.name === recipeName);
+            if (!currentRecipe) return;
+            
+            document.getElementById('categoriesView').classList.add('hidden');
+            document.getElementById('recipesView').classList.add('hidden');
+            document.getElementById('recipeDetailView').classList.remove('hidden');
+            
+            let details = `
+                <div class="recipe-card">
+                    <div class="recipe-header">
+                        <span class="recipe-header-emoji">${currentRecipe.emoji}</span>
+                        <span class="recipe-header-title">${currentRecipe.name}</span>
+                    </div>
+                    
+                    <div class="recipe-section">
+                        <div class="recipe-section-title">📝 Ingredientes</div>
+                        <ul class="ingredients-list">
+                            ${currentRecipe.ingredients.map(i => `<li>• ${i}</li>`).join('')}
+                        </ul>
+                    </div>
+            `;
+            
+            if (currentRecipe.validity) {
+                details += `
+                    <div class="recipe-section">
+                        <div class="recipe-section-title">⏰ Validade</div>
+                        <div class="preparation-text">${currentRecipe.validity.replace(/\n/g, '<br>')}</div>
+                    </div>
+                `;
+            }
+            
+            if (currentRecipe.yield) {
+                details += `
+                    <div class="recipe-section">
+                        <div class="recipe-section-title">⚖️ Rendimento</div>
+                        <div class="preparation-text">${currentRecipe.yield}</div>
+                    </div>
+                `;
+            }
+            
+            if (currentRecipe.storage) {
+                details += `
+                    <div class="recipe-section">
+                        <div class="recipe-section-title">🌡️ Armazenamento</div>
+                        <div class="preparation-text">${currentRecipe.storage}</div>
+                    </div>
+                `;
+            }
+            
+            details += `
+                <div class="recipe-section">
+                    <div class="recipe-section-title">👩‍🍳 Modo de preparo</div>
+                    <div class="preparation-text">${currentRecipe.prep.replace(/\n/g, '<br>')}</div>
+                </div>
+            `;
+            
+            if (currentRecipe.epi) {
+                details += `
+                    <div class="recipe-section">
+                        <div class="recipe-section-title">🧤 EPIs recomendados</div>
+                        <div class="preparation-text">${currentRecipe.epi}</div>
+                    </div>
+                `;
+            }
+            
+            if (currentRecipe.obs) {
+                details += `<div class="observation">📌 ${currentRecipe.obs}</div>`;
+            }
+            
+            // Só mostra botão de calcular se o item tiver hasCalculator = true
+            if (currentRecipe.hasCalculator) {
+                details += `
+                    <button class="calc-button" onclick="openCalculator('${currentRecipe.name.replace(/'/g, "\\'")}')">
+                        🧮 Calcular proporção
+                    </button>
+                `;
+            }
+            
+            details += `</div>`;
+            document.getElementById('recipeDetail').innerHTML = details;
+        }
+
+        function showRecipes() {
+            if (currentCategory) selectCategory(currentCategory);
+            else showCategories();
+        }
+
+        function searchRecipes(term) {
+            const results = recipes.filter(r => 
+                r.name.toLowerCase().includes(term) ||
+                (r.ingredients && r.ingredients.some(i => i.toLowerCase().includes(term)))
+            );
+            
+            if (results.length === 0) {
+                document.getElementById('categoriesView').innerHTML = '<div class="no-results">🔍 Nenhum item encontrado</div>';
+                document.getElementById('categoriesView').classList.remove('hidden');
+                document.getElementById('recipesView').classList.add('hidden');
+                document.getElementById('recipeDetailView').classList.add('hidden');
+                return;
+            }
+            
+            document.getElementById('categoriesView').classList.add('hidden');
+            document.getElementById('recipesView').classList.remove('hidden');
+            document.getElementById('recipeDetailView').classList.add('hidden');
+            
+            document.getElementById('categoryHeader').innerHTML = `
+                <div class="category-title">
+                    <span class="category-title-emoji">🔍</span>
+                    <span class="category-title-text">Resultados</span>
+                </div>
+            `;
+            
+            let listHtml = '';
+            results.forEach(r => {
+                listHtml += `
+                    <div class="recipe-item" onclick="selectRecipe('${r.name.replace(/'/g, "\\'")}')">
+                        <div class="recipe-item-header">
+                            <span class="recipe-item-name">${r.emoji} ${r.name}</span>
+                            <span class="recipe-item-icon">→</span>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('recipesList').innerHTML = listHtml;
+        }
+
+        // Calculadora
+        function openCalculator(recipeName) {
+            currentRecipe = recipes.find(r => r.name === recipeName);
+            document.getElementById('modalRecipeName').textContent = recipeName;
+            document.getElementById('multiplierInput').value = '1';
+            document.getElementById('modalResult').innerHTML = '';
+            document.getElementById('printSection').style.display = 'none';
+            document.getElementById('calcModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('calcModal').classList.remove('active');
+        }
+
+        function calculateProportion() {
+            if (!currentRecipe) return;
+            
+            const input = document.getElementById('multiplierInput').value.trim();
+            let multiplier;
+            
+            try {
+                const exp = input.replace(',', '.');
+                if (exp.includes('/')) {
+                    const parts = exp.split('/');
+                    multiplier = parseFloat(parts[0]) / parseFloat(parts[1]);
+                } else {
+                    multiplier = parseFloat(exp);
+                }
+                if (isNaN(multiplier) || multiplier <= 0) throw new Error();
+            } catch {
+                document.getElementById('modalResult').innerHTML = '<div style="color:#E63946; padding:20px; text-align:center;">⚠️ Valor inválido</div>';
+                document.getElementById('printSection').style.display = 'none';
+                return;
+            }
+
+            lastMultiplier = multiplier;
+
+            let result = '<div style="margin-top:20px;"><strong>📝 Ingredientes (proporção):</strong></div><ul style="list-style:none; padding:0;">';
+            currentRecipe.ingredients.forEach(ing => {
+                const match = ing.match(/^([\d.,]+)\s*(.+)$/);
+                if (match) {
+                    const val = parseFloat(match[1].replace(',', '.'));
+                    const unit = match[2];
+                    const novo = val * multiplier;
+                    const formatted = Number.isInteger(novo) ? novo : novo.toFixed(2).replace(/\.?0+$/, '');
+                    result += `<li style="padding:8px 0; border-bottom:1px solid #F0F0F0;">• ${formatted} ${unit}</li>`;
+                } else {
+                    result += `<li style="padding:8px 0;">• ${ing}</li>`;
+                }
+            });
+            result += '</ul>';
+            
+            // Adiciona informação do multiplicador
+            result += `<p style="text-align:right; color:#718096; font-size:0.9em;">Fator: ${multiplier}x</p>`;
+            
+            document.getElementById('modalResult').innerHTML = result;
+            document.getElementById('printSection').style.display = 'block';
+        }
+
+        // Função de impressão otimizada para térmica
+        function printThermal() {
+            if (!currentRecipe) return;
+            
+            // Formatar os ingredientes com o último multiplicador
+            let ingredientsHtml = '';
+            currentRecipe.ingredients.forEach(ing => {
+                const match = ing.match(/^([\d.,]+)\s*(.+)$/);
+                if (match) {
+                    const val = parseFloat(match[1].replace(',', '.'));
+                    const unit = match[2];
+                    const novo = val * lastMultiplier;
+                    const formatted = Number.isInteger(novo) ? novo : novo.toFixed(2).replace(/\.?0+$/, '');
+                    ingredientsHtml += `${formatted} ${unit}\n`;
+                } else {
+                    ingredientsHtml += `${ing}\n`;
+                }
+            });
+
+            // Criar conteúdo para impressão térmica (fonte monoespaçada, compacta)
+            const printContent = `
+                ${currentRecipe.name.toUpperCase()}
+                ${'='.repeat(currentRecipe.name.length + 2)}
+                
+                INGREDIENTES (${lastMultiplier}x):
+                ${ingredientsHtml}
+                
+                MODO DE PREPARO:
+                ${currentRecipe.prep.replace(/\n/g, ' ')}
+                
+                ${currentRecipe.validity ? 'VAL: ' + currentRecipe.validity.replace(/\n/g, ' ') : ''}
+                ${currentRecipe.epi ? 'EPI: ' + currentRecipe.epi : ''}
+                
+                --- MANA ---
+            `;
+
+            // Abrir janela de impressão
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>${currentRecipe.name}</title>
+                    <style>
+                        body {
+                            font-family: 'Courier New', monospace;
+                            font-size: 12px;
+                            white-space: pre-wrap;
+                            width: 80mm; /* largura típica de térmica */
+                            margin: 0 auto;
+                            padding: 10px;
+                        }
+                        @media print {
+                            body { margin: 0; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${printContent.replace(/\n/g, '<br>')}
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        window.onclick = (e) => {
+            if (e.target === document.getElementById('calcModal')) closeModal();
+        };
+    </script>
+</body>
+</html>
